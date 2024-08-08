@@ -1,9 +1,9 @@
 "use client"
-import { useState } from 'react';
+import { useState,useRef } from 'react';
 import React from 'react';
 import ProjectCard from './ProjectCard';
 import ProjectTag from './ProjectTag';
-
+import {animate, motion,useInView} from "framer-motion";
 const projectData = [
   {
     id: 1,
@@ -40,7 +40,9 @@ const projectData = [
 ];
 
 const ProjectSection = () => {
-    const [tag,setTag]=useState("All");
+  const [tag,setTag]=useState("All");
+  const ref=useRef(null);
+  const isInView=useInView(ref,{once:true});
 
     const handleTabChange=(newTag)=>{
         setTag(newTag)
@@ -49,8 +51,14 @@ const ProjectSection = () => {
     const filteredProjects=projectData.filter((project)=>
         project.tag.includes(tag)
     );
+    const cardVarients={
+      initial:{y:50,opacity:0},
+      animate:{y:0,opacity:1},
+
+    }
     
   return (
+    <section >
     <div className="container mx-auto px-4 md:px-0">
       <h2 className="text-center text-4xl font-bold text-white mt-8 mb-6">
         My Projects</h2>
@@ -69,8 +77,14 @@ const ProjectSection = () => {
            />
 
         </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {filteredProjects.map((project) => (
+      <ul ref={ref} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {filteredProjects.map((project,index) => (
+          <motion.li 
+          key={index}
+          variants={cardVarients}
+           initial="initial" 
+           animate={isInView?"animate":"initial"}
+           transition={{duration:0.3,delay:index*0.4}}>
           <ProjectCard
             key={project.id}
             title={project.title}
@@ -79,9 +93,11 @@ const ProjectSection = () => {
             gitUrl={project.gitUrl}
             previewUrl={project.previewUrl}
           />
+          </motion.li>
         ))}
-      </div>
+      </ul>
     </div>
+    </section>
   );
 }
 
