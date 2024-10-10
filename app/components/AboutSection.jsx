@@ -63,7 +63,7 @@ const AboutSection = () => {
       <div className='md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 xl:gap-16 sm:py-16 xl:px-16'>
         <div className='relative w-full h-96 md:h-full'>
           <Image
-            src="/images/ForaboutSection.jpg"
+            src=".//images/ForaboutSection.jpg"
             layout="fill"
             objectFit="cover"
             alt="About Me Image"
